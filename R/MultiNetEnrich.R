@@ -31,7 +31,7 @@ multiNetEnrich <- function(multiGene, network, p = 0, TERM2GENE = NULL,
                       combineMethod = "fisher",
                       stoufferWeights = NULL, output = "enrichResult", 
                       combineLevel = "enrichResult") {
-    output <- match.arg(output, c("enrichResult", "compareClusterResult", "list"))
+    output <- match.arg(output, c("enrichResult", "compareClusterResult", "multiEnrichResult", "list"))
     gene_list <- vector("list", ncol(multiGene))
     names(gene_list) <- colnames(multiGene)
     for (i in names(gene_list)) {
@@ -77,25 +77,6 @@ multiNetEnrich <- function(multiGene, network, p = 0, TERM2GENE = NULL,
 
     compareClusterResult <- clusterProfiler::merge_result(enrichResultList)
        
-    # library(metap)   
-    # resultdf <- matrix(0, nrow = enrichResultList[[1]], ncol = length(gene_list))
-    # rownames(resultdf) <- enrichResultList[[1]]@result$ID
-    # colnames(resultdf) <- names(gene_list) 
-    # for (i in names(gene_list)) {
-    #     ii <- match(rownames(resultdf), enrichResultList[[i]]@result$ID)
-    #     resultdf[, i] <- enrichResultList[[i]]@result[ii, "pvalue"]
-    # }     
-   
-    # pathway_meta <- rep(1, nrow(resultdf))
-    # for (k in 1:length(pathway_meta)) {
-    #     pvalues <- as.numeric(resultdf[k, ])
-    #     pvalues2 <- pvalues[!is.na(pvalues)]
-    #     if (length(pvalues2) < 2) {
-    #         pathway1_meta[k] <- pvalues[1]
-    #     }  else {
-    #         pathway1_meta[k] <- sumlog(pvalues2)$p
-    #     }       
-    # }
     if (output == "compareClusterResult") {
         return(compareClusterResult)
     }
@@ -106,8 +87,11 @@ multiNetEnrich <- function(multiGene, network, p = 0, TERM2GENE = NULL,
     em@pvalueCutoff <- pvalueCutoff
     em@qvalueCutoff <- qvalueCutoff
     enrichResult <- get_enriched2(em)
-    if (output == "enrichResult") {
+    if (output == "multiEnrichResult") {
         return(enrichResult)
+    }
+    if (output == "enrichResult") {
+        return(multiEnrichResult2enrichResult(enrichResult))
     }
 
     if (output == "list") {

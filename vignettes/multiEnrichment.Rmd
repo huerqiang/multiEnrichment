@@ -91,7 +91,7 @@ head(ActivePathways_result)
 ```
 
 multiNetEnrich algorithm
-```{r eval=TRUE, message=FALSE, warning=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE}
 # output: enrichResult
 multiNetEnrich_result <- multiEnrichment(multiGene = multiGene, 
                                          method = "multiNetEnrich", 

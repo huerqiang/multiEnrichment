@@ -49,7 +49,10 @@ multiEnrichment <- function(multiGene,
     method <- match.arg(method,
         c("enricher", "GSEA", "mitch", "ActivePathways", "multiNetEnrich"))
     if (method == "mitch") {
-        em <- mitch_method(multiGene, TERM2GENE, minGSSize = minGSSize, ...)
+        em <- mitch_method(multiGene, TERM2GENE, TERM2NAME = TERM2NAME, 
+                           minGSSize = minGSSize, pvalueCutoff = pvalueCutoff, 
+                           pAdjustMethod = pAdjustMethod, qvalueCutoff = qvalueCutoff, ...)
+
     }
 
     if (method == "ActivePathways") {
