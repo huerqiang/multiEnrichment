@@ -75,7 +75,7 @@ ActivePathways_method <- function(multiGene,
         merge.method <- "Brown"
     }
     em <- ActivePathways::ActivePathways(scores = scores, gmt = gmts2,
-        significant = 1, background = background, ...)
+        significant = 1, background = background, correction_method = "none", ...)
 
     Count <- vapply(em$overlap, length, FUN.VALUE = 1)
     nInputGene <- length(intersect(rownames(multiGene), TERM2GENE$gene))
@@ -90,6 +90,11 @@ ActivePathways_method <- function(multiGene,
     p.adj <- p.adjust(em$adjusted_p_val, method=pAdjustMethod)
     qobj <- tryCatch(qvalue(p=em$adjusted_p_val, lambda=0.05, pi0.method="bootstrap"),
         error=function(e) NULL)
+    if (is.null(qobj)) {
+    qvalues <- p.adj
+    } else {
+        qvalues <- qobj$qvalue
+    }
     geneID <- vapply(em$overlap, function(i) paste(i, collapse="/"), FUN.VALUE = "1")
     result <- data.frame(ID          = em$term_id,
                          Description = em$term_name,
@@ -97,7 +102,7 @@ ActivePathways_method <- function(multiGene,
                          BgRatio     = BgRatio,
                          pvalue      = em$adjusted_p_val,
                          p.adjust    = p.adj,
-                         qvalue      = qobj$qvalue,
+                         qvalue      = qvalues,
                          geneID      = geneID,
                          Count       = Count)
     result <- result[result$pvalue < pvalueCutoff, ]
