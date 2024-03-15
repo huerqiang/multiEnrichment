@@ -95,7 +95,7 @@ multiNetEnrich <- function(multiGene, network, p = 0, TERM2GENE = NULL,
     }
 
     if (output == "list") {
-        return(list(compareClusterResult = compareClusterResult, enrichResult = enrichResult))
+        return(list(compareClusterResult = compareClusterResult, enrichResult = multiEnrichResult2enrichResult(enrichResult)))
     }
     
 }
