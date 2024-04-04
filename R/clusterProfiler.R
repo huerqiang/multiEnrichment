@@ -46,9 +46,9 @@ multi_enricher <- function(multiGene,
             pvalueCutoff = 1, qvalueCutoff = 1, ...)
     }
     if (combineLevel == "gene") {
-        gene_df <- combine_pvalue(multiGene, object = "gene")
+        gene_df <- combine_pvalue(multiGene, object = "gene", method = combineMethod)
         gene <- gene_df[gene_df[, 2] < cutoff, 1]
-        result <- clusterProfiler::enricher(gene, TERM2GENE = TERM2GENE,
+        result <- clusterProfiler::enricher(gene, TERM2GENE = TERM2GENE, TERM2NAME = TERM2NAME,
             pvalueCutoff = 1, qvalueCutoff = 1, ...)
         return(result)
     }
@@ -121,11 +121,11 @@ multi_GSEA <- function(multiGene,
     output <- match.arg(output, c("multiGseaResult", "gseaResult", "compareClusterResult"))
     combineLevel <- match.arg(combineLevel, c("gene", "enrichResult"))
     if (combineLevel == "gene") {
-        gene_df <- combine_pvalue(multiGene, object = "gene")
+        gene_df <- combine_pvalue(multiGene, object = "gene", method = combineMethod)
         genelist <- gene_df[,2]
         names(genelist) <- gene_df[, 1]
         genelist <- sort(genelist, decreasing = TRUE)
-        result <- clusterProfiler::GSEA(genelist, TERM2GENE = TERM2GENE,
+        result <- clusterProfiler::GSEA(genelist, TERM2GENE = TERM2GENE, TERM2NAME = TERM2NAME,
              pvalueCutoff = 1)
         return(result)
     }

@@ -75,7 +75,8 @@ ActivePathways_method <- function(multiGene,
         merge.method <- "Brown"
     }
     em <- ActivePathways::ActivePathways(scores = scores, gmt = gmts2,
-        significant = 1, background = background, correction_method = "none", ...)
+        significant = 1, background = background, correction_method = "none", 
+        merge_method = merge.method, ...)
 
     Count <- vapply(em$overlap, length, FUN.VALUE = 1)
     nInputGene <- length(intersect(rownames(multiGene), TERM2GENE$gene))

@@ -40,7 +40,7 @@ multiNetEnrich <- function(multiGene, network, p = 0, TERM2GENE = NULL,
     combineLevel <- match.arg(combineLevel, c("gene", "enrichResult"))
   
     if (combineLevel == "gene") {
-        gene_df <- combine_pvalue(multiGene, object = "gene")
+        gene_df <- combine_pvalue(multiGene, object = "gene", method = combineMethod)
         gene <- gene_df[gene_df[, 2] < cutoff, 1]
         result <- NetEnrich(gene, network = network, 
                 p = p, TERM2GENE = TERM2GENE,
