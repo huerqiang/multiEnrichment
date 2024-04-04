@@ -45,7 +45,7 @@ ActivePathways_method <- function(multiGene,
     if (!is.null(TERM2NAME)) {
       rownames(TERM2NAME) <- TERM2NAME[, 1]
       termName <- TERM2NAME[names(gmts), 2]
-      for (k in length(gmts2)) {
+      for (k in seq(length(gmts2))) {
           gmts2[[k]]$name <- termName[k]
       }
     }   
