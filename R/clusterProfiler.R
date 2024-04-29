@@ -42,7 +42,7 @@ multi_enricher <- function(multiGene,
     combineLevel <- match.arg(combineLevel, c("gene", "enrichResult"))
     run_enricher <- function(df, ...) {
         genes <- df[df$pvalue < cutoff, "gene"]
-        clusterProfiler::enricher(genes, TERM2GENE = TERM2GENE,
+        clusterProfiler::enricher(genes, TERM2GENE = TERM2GENE, TERM2NAME = TERM2NAME, 
             pvalueCutoff = 1, qvalueCutoff = 1, ...)
     }
     if (combineLevel == "gene") {
