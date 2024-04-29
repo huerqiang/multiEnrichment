@@ -30,7 +30,7 @@ data(network)
 ```
 
 Multiple omics forms for ORA algorithm.
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE}
 # output: enrichResult
 enricher_result <- multiEnrichment(multiGene = multiGene, method = "enricher", 
                                    TERM2GENE = TERM2GENE) 

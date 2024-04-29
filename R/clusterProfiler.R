@@ -40,7 +40,7 @@ multi_enricher <- function(multiGene,
     # }    
     output <- match.arg(output, c("enrichResult", "multiEnrichResult", "compareClusterResult"))
     combineLevel <- match.arg(combineLevel, c("gene", "enrichResult"))
-    run_enricher <- function(df, ...) {
+    run_enricher <- function(df, TERM2GENE, TERM2NAME, ...) {
         genes <- df[df$pvalue < cutoff, "gene"]
         clusterProfiler::enricher(genes, TERM2GENE = TERM2GENE, TERM2NAME = TERM2NAME, 
             pvalueCutoff = 1, qvalueCutoff = 1, ...)
@@ -67,7 +67,7 @@ multi_enricher <- function(multiGene,
         return(em)
     }
 
-    multiEm <- lapply(multiGeneList, run_enricher, ...)
+    multiEm <- lapply(multiGeneList, run_enricher, TERM2GENE = TERM2GENE, TERM2NAME = TERM2NAME, ...)
     em <- combine_enricher(multiEm = multiEm, method = combineMethod, 
         stoufferWeights = stoufferWeights, pAdjustMethod = pAdjustMethod,
         pvalueCutoff = pvalueCutoff, qvalueCutoff = qvalueCutoff)
@@ -156,14 +156,14 @@ multi_GSEA <- function(multiGene,
     }
 
 
-    run_GSEA <- function(df, ...) {
+    run_GSEA <- function(df, TERM2GENE, TERM2NAME) {
         genelist <- df$pvalue
         names(genelist) <- df$gene
         genelist <- sort(genelist, decreasing = TRUE)
-        clusterProfiler::GSEA(genelist, TERM2GENE = TERM2GENE,
+        clusterProfiler::GSEA(genelist, TERM2GENE = TERM2GENE, TERM2NAME = TERM2NAME,
              pvalueCutoff = 1)
     }
-    multiEm <- lapply(multiGeneList, run_GSEA, ...)
+    multiEm <- lapply(multiGeneList, run_GSEA, TERM2GENE = TERM2GENE, TERM2NAME = TERM2NAME, ...)
     em <- combine_GSEA(multiEm, method = combineMethod, 
         stoufferWeights = stoufferWeights, pAdjustMethod = pAdjustMethod,
         pvalueCutoff = pvalueCutoff, qvalueCutoff = qvalueCutoff)
